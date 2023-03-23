@@ -7,3 +7,15 @@ build-grpc:
 
 run-grpc: build-grpc
 	@./bin/${REPO_NAME}-grpc
+
+new-migration:
+	@migrate create -ext sql -dir scripts/migrations -seq $(name)
+
+migration-up:
+	@migrate -database "${POSTGRES_MASTER_ADDRESS}" -path scripts/migrations up $(step)
+
+migration-down:
+	@migrate -database "${POSTGRES_MASTER_ADDRESS}" -path scripts/migrations down $(step)
+
+migration-force:
+	@migrate -database "${POSTGRES_MASTER_ADDRESS}" -path scripts/migrations force $(version)
