@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "8000:5432"
+    networks:
+      - docker-be_default
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=demo
+      - POSTGRES_ENCODING=UTF8
+      - POSTGRES_COLLATE=C
+      - POSTGRES_COLLATE_TYPE=C
+    container_name: demo_postgres
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+
+volumes:
+  postgresql:
+  postgresql_data:
+
+networks:
+  docker-be_default:
