@@ -1,6 +1,7 @@
 package grpc
 
 import (
+	"context"
 	middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"google.golang.org/grpc"
@@ -12,7 +13,7 @@ type Server struct {
 	server *grpc.Server
 }
 
-func (s *Server) Serve(port string) error {
+func (s *Server) Serve(_ context.Context, port string) error {
 	s.server = grpc.NewServer(
 		grpc.StreamInterceptor(middleware.ChainStreamServer(
 			prometheus.StreamServerInterceptor,
@@ -26,7 +27,6 @@ func (s *Server) Serve(port string) error {
 
 	// Initialize all metrics.
 	prometheus.EnableHandlingTimeHistogram()
-
 	prometheus.Register(s.server)
 
 	// Create port listener
